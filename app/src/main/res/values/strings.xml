@@ -15,7 +15,7 @@
     <string name="menu_about">关于</string>
     <string name="menu_report">意见反馈</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="icon">icon</string>
+    <string name="version">0.1.0</string>
 
 </resources>
