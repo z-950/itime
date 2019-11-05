@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/menu_group_1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/baseline_home_black_18dp"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_widget"
+            android:icon="@drawable/baseline_widgets_black_18dp"
+            android:title="@string/menu_widget" />
+        <item
+            android:id="@+id/nav_theme"
+            android:icon="@drawable/baseline_color_lens_black_18dp"
+            android:title="@string/menu_theme" />
+    </group>
+    <group
+        android:id="@+id/menu_group_2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_lock"
+            android:icon="@android:drawable/ic_lock_idle_lock"
+            android:title="@string/menu_lock" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@android:drawable/ic_menu_manage"
+            android:title="@string/menu_settings" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@android:drawable/ic_dialog_info"
+            android:title="@string/menu_about" />
+        <item
+            android:id="@+id/nav_report"
+            android:icon="@android:drawable/stat_notify_chat"
+            android:title="@string/menu_report" />
+    </group>
+
+</menu>
