@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void setFabColor(){
+    private void setFabColor() {
         fab.setBackgroundTintList(ColorStateList.valueOf(color));
     }
 }

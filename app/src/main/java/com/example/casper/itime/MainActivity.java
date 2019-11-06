@@ -1,18 +1,26 @@
 package com.example.casper.itime;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +38,7 @@ public class MainActivity extends AppCompatActivity
     private String currentTag;
 
     private Toolbar toolbar;
+    private AppBarLayout barLayout;
 
     private int themeColor = 0xFF000000;
 
@@ -37,9 +46,12 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setStatusBarTransparent(this);
+
         // 初始化工具栏
         toolbar = findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
+        barLayout = findViewById(R.id.app_bar_layout);
 
         // 初始化抽屉
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -61,25 +73,35 @@ public class MainActivity extends AppCompatActivity
 
     void setThemeColor(int color) {
         themeColor = color;
-        // 状态栏颜色
+        // 工具栏颜色
         toolbar.setBackgroundColor(color);
-        setStatusBarColor(color);
+        barLayout.setBackgroundColor(color);
         // 按钮颜色
         ((HomeFragment) fragmentManager.findFragmentByTag(HOME_TAG)).setColor(color);
     }
 
-    void setStatusBarColor(int statusColor) {
-        Window window = this.getWindow();
-        //取消状态栏透明
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        //添加Flag把状态栏设为可绘制模式
+    private static void setStatusBarTransparent(Activity activity) {
+        Window window = activity.getWindow();
+        // 添加Flag把状态栏设为可绘制模式
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        //设置状态栏颜色
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.setStatusBarColor(statusColor);
-        }
-        //设置系统状态栏处于可见状态
+        // 添加设置Window半透明的Flag
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        // 设置系统状态栏处于可见状态
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        // 调整高度
+        fixToolBarHeight(activity);
+    }
+
+    private static void fixToolBarHeight(Activity activity) {
+        int height = getStatusBarHeight(activity);
+        activity.findViewById(R.id.app_bar_layout).setPadding(0, height, 0, 0);
+    }
+
+    private static int getStatusBarHeight(Context context) {
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+        int height = resources.getDimensionPixelSize(resourceId);
+        return height;
     }
 
     private void initRoutes() {
@@ -134,7 +156,13 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_widget) {
 
         } else if (id == R.id.nav_theme) {
-
+            ThemeSelectDialog dialog = new ThemeSelectDialog(MainActivity.this, new ThemeSelectDialog.DialogEventListener() {
+                public void DialogEvent(int color) {
+                    //在这里就获取到了从对话框传回来的值
+                    setThemeColor(color);
+                }
+            });
+            dialog.show();
         } else if (id == R.id.nav_lock) {
 
         } else if (id == R.id.nav_settings) {
