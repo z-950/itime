@@ -14,15 +14,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ThemeSelectDialog extends Dialog {
+public class ColorSelectDialog extends Dialog {
     public interface DialogEventListener {
-        public void DialogEvent(int color);
+        void DialogEvent(int color);
     }
 
     private DialogEventListener listener;
     private Context context;
 
-    public ThemeSelectDialog(Context context, DialogEventListener listener) {
+    public ColorSelectDialog(Context context, DialogEventListener listener) {
         super(context, R.style.dialog);
         this.context = context;
         this.listener = listener;
