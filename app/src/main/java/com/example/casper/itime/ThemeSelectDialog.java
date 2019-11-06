@@ -33,10 +33,10 @@ public class ThemeSelectDialog extends Dialog {
         super.onCreate(savedInstanceState);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.theme_select_layout, null);
+        View layout = inflater.inflate(R.layout.color_select_layout, null);
 
         ArrayList<Integer> colors = getColors();
-        GridArrayAdapter adapter = new GridArrayAdapter(context, R.layout.grid_item_layout, colors, listener);
+        GridArrayAdapter adapter = new GridArrayAdapter(context, R.layout.color_select_item_layout, colors, listener);
 
         ((TextView) layout.findViewById(R.id.dialog_title)).setText("选择颜色");
 
@@ -64,30 +64,45 @@ public class ThemeSelectDialog extends Dialog {
     class GridArrayAdapter extends ArrayAdapter<Integer> {
         private int resourceId;
         DialogEventListener listener;
+        private int colorsLen;
 
         public GridArrayAdapter(Context context, int resource, List<Integer> objects, DialogEventListener listener) {
             super(context, resource, objects);
             resourceId = resource;
             this.listener = listener;
+            this.colorsLen = objects.size();
+        }
+
+        @Override
+        public int getCount() {
+            return super.getCount() + 1;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater mInflater = LayoutInflater.from(this.getContext());
-            View item = mInflater.inflate(this.resourceId, null);
-
-            final int color = this.getItem(position);
-
+            View item = mInflater.inflate(this.resourceId, parent, false);
             Button button = item.findViewById(R.id.color_button);
-            button.setBackgroundColor(color);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.DialogEvent(color);
-                    dismiss();
-                }
-            });
 
+            if (position == colorsLen) {
+                button.setBackgroundResource(R.drawable.baseline_color_lens_black_18dp);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dismiss();
+                    }
+                });
+            } else {
+                final int color = this.getItem(position);
+
+                button.setBackgroundColor(color);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        listener.DialogEvent(color);
+                    }
+                });
+            }
             return item;
         }
     }

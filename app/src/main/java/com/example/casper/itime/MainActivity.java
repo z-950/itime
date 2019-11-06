@@ -3,24 +3,19 @@ package com.example.casper.itime;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
-import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -64,8 +59,8 @@ public class MainActivity extends AppCompatActivity
 
         // 初始化fragment
         fragmentManager = getSupportFragmentManager();
-        initRoutes();
-        showRoute(HOME_TAG);
+        initFragments();
+        showFragment(HOME_TAG);
 
         // 初始化主题颜色
         setThemeColor(themeColor);
@@ -104,21 +99,21 @@ public class MainActivity extends AppCompatActivity
         return height;
     }
 
-    private void initRoutes() {
+    private void initFragments() {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        initAddRoute(transaction, new HomeFragment(), HOME_TAG);
-        initAddRoute(transaction, new AboutFragment(), ABOUT_TAG);
+        initAddFragment(transaction, new HomeFragment(), HOME_TAG);
+        initAddFragment(transaction, new AboutFragment(), ABOUT_TAG);
 
         transaction.commitNow();
     }
 
-    private void initAddRoute(FragmentTransaction transaction, Fragment fragment, String tab) {
+    private void initAddFragment(FragmentTransaction transaction, Fragment fragment, String tab) {
         transaction.add(R.id.main_frame_layout, fragment, tab);
         transaction.hide(fragment);
     }
 
-    private void showRoute(String tag) {
+    private void showFragment(String tag) {
         if (tag == currentTag) {
             return;
         }
@@ -152,7 +147,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            showRoute(HOME_TAG);
+            showFragment(HOME_TAG);
         } else if (id == R.id.nav_widget) {
 
         } else if (id == R.id.nav_theme) {
@@ -168,7 +163,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_about) {
-            showRoute(ABOUT_TAG);
+            showFragment(ABOUT_TAG);
         } else if (id == R.id.nav_report) {
 
         }

@@ -17,8 +17,13 @@
 
     <GridView
         android:id="@+id/color_grid"
-        android:layout_width="match_parent"
+        android:layout_width="168dp"
         android:layout_height="wrap_content"
-        android:numColumns="3" />
+        android:layout_margin="8dp"
+        android:columnWidth="40dp"
+        android:horizontalSpacing="16dp"
+        android:numColumns="3"
+        android:stretchMode="spacingWidth"
+        android:verticalSpacing="16dp" />
 
 </LinearLayout>
