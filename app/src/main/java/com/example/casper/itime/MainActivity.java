@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_widget) {
 
         } else if (id == R.id.nav_theme) {
-            ColorSelectDialog dialog = new ColorSelectDialog(MainActivity.this, new ColorSelectDialog.DialogEventListener() {
+            ColorSelectDialog dialog = new ColorSelectDialog(MainActivity.this, themeColor, new ColorSelectDialog.DialogEventListener() {
                 public void DialogEvent(int color) {
                     //在这里就获取到了从对话框传回来的值
                     setThemeColor(color);

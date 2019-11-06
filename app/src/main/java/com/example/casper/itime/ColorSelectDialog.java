@@ -21,11 +21,13 @@ public class ColorSelectDialog extends Dialog {
 
     private DialogEventListener listener;
     private Context context;
+    private int currentColor;
 
-    public ColorSelectDialog(Context context, DialogEventListener listener) {
+    public ColorSelectDialog(Context context, int color, DialogEventListener listener) {
         super(context, R.style.dialog);
         this.context = context;
         this.listener = listener;
+        currentColor = color;
     }
 
     @Override
@@ -89,6 +91,7 @@ public class ColorSelectDialog extends Dialog {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        new ColorPickerDialog(context, currentColor, listener).show();
                         dismiss();
                     }
                 });
@@ -100,6 +103,7 @@ public class ColorSelectDialog extends Dialog {
                     @Override
                     public void onClick(View view) {
                         listener.DialogEvent(color);
+                        currentColor = color;
                     }
                 });
             }
