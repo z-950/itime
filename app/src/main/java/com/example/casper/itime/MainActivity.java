@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.casper.itime.util.ColorManager;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
 
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
     private AppBarLayout barLayout;
 
-    private int themeColor = 0xFF000000;
+    private int themeColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,12 @@ public class MainActivity extends AppCompatActivity
         initFragments();
         showFragment(HOME_TAG);
 
+        // 获取储存的颜色
+        themeColor = ColorManager.load(this);
+        if (themeColor == 0) {
+            themeColor = 0xFF000000;
+        }
+
         // 初始化主题颜色
         setThemeColor(themeColor);
     }
@@ -73,6 +80,8 @@ public class MainActivity extends AppCompatActivity
         barLayout.setBackgroundColor(color);
         // 按钮颜色
         ((HomeFragment) fragmentManager.findFragmentByTag(HOME_TAG)).setColor(color);
+        // 保存到本地
+        ColorManager.save(this, color);
     }
 
     private static void setStatusBarTransparent(Activity activity) {
