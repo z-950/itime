@@ -2,7 +2,9 @@ package com.example.casper.itime;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.core.view.GravityCompat;
@@ -24,6 +26,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -174,7 +178,10 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             showFragment(ABOUT_TAG);
         } else if (id == R.id.nav_report) {
-
+            // 从默认浏览器打开
+            Uri uri = Uri.parse("https://github.com/z-950/itime/issues/new");
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
