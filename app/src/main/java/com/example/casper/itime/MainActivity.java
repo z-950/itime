@@ -27,8 +27,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import java.net.URL;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static final String HOME_TAG = "home";
@@ -88,7 +86,7 @@ public class MainActivity extends AppCompatActivity
         ColorManager.save(this, color);
     }
 
-    private static void setStatusBarTransparent(Activity activity) {
+    public static void setStatusBarTransparent(Activity activity) {
         Window window = activity.getWindow();
         // 添加Flag把状态栏设为可绘制模式
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -100,12 +98,12 @@ public class MainActivity extends AppCompatActivity
         fixToolBarHeight(activity);
     }
 
-    private static void fixToolBarHeight(Activity activity) {
+    public static void fixToolBarHeight(Activity activity) {
         int height = getStatusBarHeight(activity);
         activity.findViewById(R.id.app_bar_layout).setPadding(0, height, 0, 0);
     }
 
-    private static int getStatusBarHeight(Context context) {
+    public static int getStatusBarHeight(Context context) {
         Resources resources = context.getResources();
         int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
         int height = resources.getDimensionPixelSize(resourceId);
@@ -171,7 +169,7 @@ public class MainActivity extends AppCompatActivity
                 }
             });
             dialog.show();
-        } else if (id == R.id.nav_lock) {
+        } else if (id == R.id.add_time_confirm) {
 
         } else if (id == R.id.nav_settings) {
 

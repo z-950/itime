@@ -1,5 +1,6 @@
 package com.example.casper.itime;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 
@@ -13,11 +14,27 @@ import android.view.ViewGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import static android.app.Activity.RESULT_OK;
+
 public class HomeFragment extends Fragment {
-    FloatingActionButton fab;
-    int color = 0;
-    boolean colorChanged = false;
-    boolean setable = false;
+    private FloatingActionButton fab;
+    private int color = 0;
+    private boolean colorChanged = false;
+    private boolean setable = false;
+
+    //定义一个startActivityForResult（）方法用到的整型值
+    private final int requestCode = 1500;
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == this.requestCode) {
+            if (resultCode == RESULT_OK) {
+                //接收并添加传过来的值
+            }
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,8 +46,9 @@ public class HomeFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getContext(), AddTimeActivity.class);
+                intent.putExtra("color", color);
+                startActivityForResult(intent, requestCode);
             }
         });
 

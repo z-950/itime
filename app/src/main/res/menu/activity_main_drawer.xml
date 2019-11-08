@@ -23,7 +23,7 @@
         android:id="@+id/menu_group_2"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_lock"
+            android:id="@+id/add_time_confirm"
             android:icon="@android:drawable/ic_lock_idle_lock"
             android:title="@string/menu_lock" />
         <item
