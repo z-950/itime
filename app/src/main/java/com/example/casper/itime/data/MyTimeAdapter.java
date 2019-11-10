@@ -43,9 +43,9 @@ public class MyTimeAdapter extends ArrayAdapter<MyTime> {
             deltaString = "还有" + Math.abs(deltaDay) + "天";
         }
 
-        ((TextView) view.findViewById(R.id.my_time_title_text_iew)).setText(myTime.title);
-        ((TextView) view.findViewById(R.id.my_time_remark_text_view)).setText(myTime.remark);
-        ((TextView) view.findViewById(R.id.my_time_countdown_text_view)).setText(deltaString);
+        ((TextView) view.findViewById(R.id.home_my_time_title_text_iew)).setText(myTime.title);
+        ((TextView) view.findViewById(R.id.home_my_time_remark_text_view)).setText(myTime.remark);
+        ((TextView) view.findViewById(R.id.home_my_time_countdown_text_view)).setText(deltaString);
 
         return view;
     }

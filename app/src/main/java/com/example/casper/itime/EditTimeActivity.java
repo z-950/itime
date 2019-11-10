@@ -25,7 +25,7 @@ import java.util.Calendar;
 
 import static com.example.casper.itime.MainActivity.setStatusBarTransparent;
 
-public class AddTimeActivity extends AppCompatActivity {
+public class EditTimeActivity extends AppCompatActivity {
     private EditText editTitle, editRemark;
 
     private TextView dateTextView;
@@ -36,7 +36,7 @@ public class AddTimeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_time);
+        setContentView(R.layout.edit_time_activity);
 
         // 状态栏透明
         setStatusBarTransparent(this);
@@ -57,7 +57,7 @@ public class AddTimeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 取消
-                AddTimeActivity.this.finish();
+                EditTimeActivity.this.finish();
             }
         });
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -77,9 +77,9 @@ public class AddTimeActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("time", myTime);
                 intent.putExtras(bundle);
-                AddTimeActivity.this.setResult(RESULT_OK, intent);
+                EditTimeActivity.this.setResult(RESULT_OK, intent);
 
-                AddTimeActivity.this.finish();
+                EditTimeActivity.this.finish();
                 return true;
             }
         });
@@ -107,7 +107,7 @@ public class AddTimeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // 选择日期
                 Calendar c = Calendar.getInstance();
-                DatePickerDialog dialog = new DatePickerDialog(AddTimeActivity.this,
+                DatePickerDialog dialog = new DatePickerDialog(EditTimeActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -128,7 +128,7 @@ public class AddTimeActivity extends AppCompatActivity {
                 if (myTime.repeatDay.type == RepeatDay.NONE) {
                     items.remove(items.size() - 1);
                 }
-                new AlertDialog.Builder(AddTimeActivity.this)
+                new AlertDialog.Builder(EditTimeActivity.this)
                         .setTitle("周期")
                         .setItems(items.toArray(new String[items.size()]), new DialogInterface.OnClickListener() {
                             @Override
@@ -138,7 +138,7 @@ public class AddTimeActivity extends AppCompatActivity {
                                     repeatDayTextView.setText(myTime.repeatDay.toString());
                                 } else {
                                     // 自定义日期
-                                    RepeatDayCustomizeDialog repeatDayCustomizeDialog = new RepeatDayCustomizeDialog(AddTimeActivity.this, new RepeatDayCustomizeDialog.DialogEventListener() {
+                                    RepeatDayCustomizeDialog repeatDayCustomizeDialog = new RepeatDayCustomizeDialog(EditTimeActivity.this, new RepeatDayCustomizeDialog.DialogEventListener() {
                                         @Override
                                         public void DialogEvent(int day) {
                                             myTime.repeatDay.setCustomizeDay(day);

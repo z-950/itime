@@ -47,9 +47,9 @@ public class ColorPickerDialog extends Dialog {
         g = (currentColor & 0x0000FF00) >> 8;
         r = (currentColor & 0x00FF0000) >> 16;
 
-        seekBarR = layout.findViewById(R.id.seek_bar_r);
-        seekBarG = layout.findViewById(R.id.seek_bar_g);
-        seekBarB = layout.findViewById(R.id.seek_bar_b);
+        seekBarR = layout.findViewById(R.id.color_picker_seek_bar_r);
+        seekBarG = layout.findViewById(R.id.color_picker_seek_bar_g);
+        seekBarB = layout.findViewById(R.id.color_picker_seek_bar_b);
 
         seekBarR.setProgress(r);
         seekBarG.setProgress(g);

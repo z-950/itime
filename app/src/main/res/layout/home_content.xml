@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <GridView
-        android:id="@+id/my_time_grid"
+        android:id="@+id/home_my_time_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:horizontalSpacing="4dp"

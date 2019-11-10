@@ -30,17 +30,17 @@ public class RepeatDayCustomizeDialog extends Dialog {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.repeat_day_customize_layout, null);
 
-        ((TextView) layout.findViewById(R.id.repeat_day_title)).setText("周期");
+        ((TextView) layout.findViewById(R.id.repeat_day_customize_dialog_title)).setText("周期");
 
-        editText = layout.findViewById(R.id.customize_day_edit_text);
+        editText = layout.findViewById(R.id.repeat_day_customize_edit_text);
 
-        layout.findViewById(R.id.repeat_day_cancel_button).setOnClickListener(new View.OnClickListener() {
+        layout.findViewById(R.id.repeat_day_customize_cancel_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dismiss();
             }
         });
-        layout.findViewById(R.id.repeat_day_confirm_button).setOnClickListener(new View.OnClickListener() {
+        layout.findViewById(R.id.repeat_day_customize_confirm_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int day;

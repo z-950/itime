@@ -40,9 +40,9 @@ public class ColorSelectDialog extends Dialog {
         ArrayList<Integer> colors = getColors();
         GridArrayAdapter adapter = new GridArrayAdapter(context, R.layout.color_select_item_layout, colors, listener);
 
-        ((TextView) layout.findViewById(R.id.dialog_title)).setText("选择颜色");
+        ((TextView) layout.findViewById(R.id.color_select_dialog_title)).setText("选择颜色");
 
-        GridView gridView = layout.findViewById(R.id.color_grid);
+        GridView gridView = layout.findViewById(R.id.color_select_grid);
         gridView.setAdapter(adapter);
 
         this.setContentView(layout);
@@ -84,7 +84,7 @@ public class ColorSelectDialog extends Dialog {
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater mInflater = LayoutInflater.from(this.getContext());
             View item = mInflater.inflate(this.resourceId, parent, false);
-            Button button = item.findViewById(R.id.color_button);
+            Button button = item.findViewById(R.id.color_select_button);
 
             if (position == colorsLen) {
                 button.setBackgroundResource(R.drawable.baseline_color_lens_black_18dp);

@@ -12,9 +12,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.example.casper.itime.data.MyTimeAdapter;
-import com.example.casper.itime.data.model.Date;
 import com.example.casper.itime.data.model.MyTime;
-import com.example.casper.itime.data.model.RepeatDay;
 import com.example.casper.itime.util.MyTimeManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -52,20 +50,20 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.home_fragment, container, false);
 
         fab = view.findViewById(R.id.add_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AddTimeActivity.class);
+                Intent intent = new Intent(getContext(), EditTimeActivity.class);
                 intent.putExtra("color", color);
                 startActivityForResult(intent, requestCode);
             }
         });
 
         initData();
-        GridView gridView = view.findViewById(R.id.my_time_grid);
+        GridView gridView = view.findViewById(R.id.home_my_time_grid);
         gridView.setAdapter(myTimeAdapter);
 
         return view;

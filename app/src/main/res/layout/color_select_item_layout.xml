@@ -4,7 +4,7 @@
     android:layout_height="wrap_content">
 
     <Button
-        android:id="@+id/color_button"
+        android:id="@+id/color_select_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_weight="1" />

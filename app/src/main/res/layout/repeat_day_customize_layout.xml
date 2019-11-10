@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/repeat_day_title"
+        android:id="@+id/repeat_day_customize_dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -16,7 +16,7 @@
         android:textSize="18sp" />
 
     <EditText
-        android:id="@+id/customize_day_edit_text"
+        android:id="@+id/repeat_day_customize_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
@@ -39,7 +39,7 @@
         android:paddingBottom="8dp">
 
         <Button
-            android:id="@+id/repeat_day_cancel_button"
+            android:id="@+id/repeat_day_customize_cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
@@ -47,7 +47,7 @@
             android:text="取消" />
 
         <Button
-            android:id="@+id/repeat_day_confirm_button"
+            android:id="@+id/repeat_day_customize_confirm_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
