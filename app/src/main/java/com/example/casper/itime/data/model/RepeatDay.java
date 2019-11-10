@@ -1,9 +1,12 @@
-package com.example.casper.itime.data;
+package com.example.casper.itime.data.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RepeatDay {
+public class RepeatDay implements Serializable {
+    private static final long serialVersionUID = -5432234235464L;
+
     public static final String WEEK = "week";
     public static final String MONTH = "month";
     public static final String YEAR = "year";

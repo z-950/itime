@@ -16,7 +16,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.casper.itime.data.RepeatDay;
+import com.example.casper.itime.data.model.MyTime;
+import com.example.casper.itime.data.model.RepeatDay;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,11 +28,10 @@ import static com.example.casper.itime.MainActivity.setStatusBarTransparent;
 public class AddTimeActivity extends AppCompatActivity {
     private EditText editTitle, editRemark;
 
-    private int year, month, day;
     private TextView dateTextView;
-
-    private RepeatDay repeatDay;
     private TextView repeatDayTextView;
+
+    private MyTime myTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,7 @@ public class AddTimeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int color = intent.getIntExtra("color", 0xFF000000);
 
-        Toolbar toolbar = this.findViewById(R.id.tool_bar);
+        final Toolbar toolbar = this.findViewById(R.id.tool_bar);
         // 设置颜色
         this.findViewById(R.id.app_bar_layout).setBackgroundColor(color);
         this.findViewById(R.id.head_layout).setBackgroundColor(color);
@@ -62,7 +63,22 @@ public class AddTimeActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                myTime.title = editTitle.getText().toString();
+                myTime.remark = editRemark.getText().toString();
+
+                if (myTime.title.isEmpty()) {
+                    // TODO:收起键盘，键盘挡住snackbar
+                    Snackbar.make(toolbar, "标题不能为空", Snackbar.LENGTH_LONG).show();
+                    return false;
+                }
+
                 // 保存数据
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("time", myTime);
+                intent.putExtras(bundle);
+                AddTimeActivity.this.setResult(RESULT_OK, intent);
+
                 AddTimeActivity.this.finish();
                 return true;
             }
@@ -78,13 +94,13 @@ public class AddTimeActivity extends AppCompatActivity {
         dateTextView = this.findViewById(R.id.date_detail_text);
         repeatDayTextView = this.findViewById(R.id.repeat_detail_text);
 
+        myTime = new MyTime();
         // 初始化日期
         Calendar c = Calendar.getInstance();
         setDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH));
         showSelectedDate();
         // 初始化重复
-        repeatDay = new RepeatDay();
-        repeatDayTextView.setText(repeatDay.toString());
+        repeatDayTextView.setText(myTime.repeatDay.toString());
 
         this.findViewById(R.id.date_layout).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +125,7 @@ public class AddTimeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // 选择重复
                 ArrayList<String> items = (ArrayList<String>) RepeatDay.repeatDayItemLabel.clone();
-                if (repeatDay.type == RepeatDay.NONE) {
+                if (myTime.repeatDay.type == RepeatDay.NONE) {
                     items.remove(items.size() - 1);
                 }
                 new AlertDialog.Builder(AddTimeActivity.this)
@@ -118,15 +134,15 @@ public class AddTimeActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if (which != RepeatDay.repeatDayItemType.indexOf(RepeatDay.CUSTOMIZE)) {
-                                    repeatDay.setType(RepeatDay.repeatDayItemType.get(which));
-                                    repeatDayTextView.setText(repeatDay.toString());
+                                    myTime.repeatDay.setType(RepeatDay.repeatDayItemType.get(which));
+                                    repeatDayTextView.setText(myTime.repeatDay.toString());
                                 } else {
                                     // 自定义日期
                                     RepeatDayCustomizeDialog repeatDayCustomizeDialog = new RepeatDayCustomizeDialog(AddTimeActivity.this, new RepeatDayCustomizeDialog.DialogEventListener() {
                                         @Override
                                         public void DialogEvent(int day) {
-                                            repeatDay.setCustomizeDay(day);
-                                            repeatDayTextView.setText(repeatDay.toString());
+                                            myTime.repeatDay.setCustomizeDay(day);
+                                            repeatDayTextView.setText(myTime.repeatDay.toString());
                                         }
                                     });
                                     repeatDayCustomizeDialog.setTitle("周期");
@@ -147,13 +163,11 @@ public class AddTimeActivity extends AppCompatActivity {
     }
 
     private void setDate(int year, int month, int day) {
-        this.year = year;
-        this.month = month;
-        this.day = day;
+        myTime.setDate(year, month, day);
     }
 
     private void showSelectedDate() {
-        dateTextView.setText(year + "年" + month + "月" + day + "日");
+        dateTextView.setText(myTime.date.year + "年" + myTime.date.month + "月" + myTime.date.day + "日");
     }
 
     @Override
