@@ -45,11 +45,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        setStatusBarTransparent(this);
+        setStatusBarTransparent(this, R.id.main_app_bar_layout);
 
         // 初始化工具栏
-        toolbar = findViewById(R.id.tool_bar);
-        barLayout = findViewById(R.id.app_bar_layout);
+        toolbar = findViewById(R.id.main_tool_bar);
+        barLayout = findViewById(R.id.main_app_bar_layout);
 
         // 初始化抽屉
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity
         ColorManager.save(this, color);
     }
 
-    public static void setStatusBarTransparent(Activity activity) {
+    public static void setStatusBarTransparent(Activity activity, int barLayoutId) {
         Window window = activity.getWindow();
         // 添加Flag把状态栏设为可绘制模式
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -95,12 +95,12 @@ public class MainActivity extends AppCompatActivity
         // 设置系统状态栏处于可见状态
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
         // 调整高度
-        fixToolBarHeight(activity);
+        fixToolBarHeight(activity, barLayoutId);
     }
 
-    public static void fixToolBarHeight(Activity activity) {
+    public static void fixToolBarHeight(Activity activity, int barLayoutId) {
         int height = getStatusBarHeight(activity);
-        activity.findViewById(R.id.app_bar_layout).setPadding(0, height, 0, 0);
+        activity.findViewById(barLayoutId).setPadding(0, height, 0, 0);
     }
 
     public static int getStatusBarHeight(Context context) {
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity
                 }
             });
             dialog.show();
-        } else if (id == R.id.add_time_confirm) {
+        } else if (id == R.id.edit_time_confirm) {
 
         } else if (id == R.id.nav_settings) {
 

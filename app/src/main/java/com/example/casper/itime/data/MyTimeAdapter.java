@@ -13,7 +13,11 @@ import com.example.casper.itime.data.model.MyTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+
 public class MyTimeAdapter extends ArrayAdapter<MyTime> {
+    //定义一个startActivityForResult（）方法用到的整型值
+    private final int requestCode = 1600;
+
     private int resourceId;
 
     public MyTimeAdapter(Context context, int resource, ArrayList<MyTime> objects) {
@@ -44,7 +48,11 @@ public class MyTimeAdapter extends ArrayAdapter<MyTime> {
         }
 
         ((TextView) view.findViewById(R.id.home_my_time_title_text_iew)).setText(myTime.title);
-        ((TextView) view.findViewById(R.id.home_my_time_remark_text_view)).setText(myTime.remark);
+        if (myTime.remark.isEmpty()) {
+            ((TextView) view.findViewById(R.id.home_my_time_remark_text_view)).setHeight(0);
+        } else {
+            ((TextView) view.findViewById(R.id.home_my_time_remark_text_view)).setText(myTime.remark);
+        }
         ((TextView) view.findViewById(R.id.home_my_time_countdown_text_view)).setText(deltaString);
 
         return view;

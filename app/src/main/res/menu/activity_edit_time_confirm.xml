@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
     <item
-        android:id="@+id/add_time_confirm"
+        android:id="@+id/edit_time_confirm"
         android:icon="@android:drawable/ic_menu_save"
         android:title="confirm"
         app:showAsAction="always" />

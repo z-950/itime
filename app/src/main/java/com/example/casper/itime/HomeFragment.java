@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.example.casper.itime.data.MyTimeAdapter;
@@ -19,6 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
+import static androidx.core.app.ActivityCompat.startActivityForResult;
 
 public class HomeFragment extends Fragment {
     private FloatingActionButton fab;
@@ -27,7 +29,11 @@ public class HomeFragment extends Fragment {
     private boolean setable = false;
 
     //定义一个startActivityForResult（）方法用到的整型值
-    private final int requestCode = 1500;
+    private static final int requestCode = 1500;
+
+    public static final int ADD_MODE = 1;
+    public static final int MODIFY_MODE = 2;
+    public static final int DELETE_MODE = 3;
 
     private ArrayList<MyTime> myTimes;
     private MyTimeAdapter myTimeAdapter;
@@ -39,9 +45,32 @@ public class HomeFragment extends Fragment {
             if (resultCode == RESULT_OK) {
                 //接收并添加传过来的值
                 Bundle bundle = data.getExtras();
-                MyTime myTime = (MyTime) bundle.getSerializable("time");
-                myTimes.add(myTime);
-                myTimeAdapter.notifyDataSetChanged();
+                int mode = bundle.getInt("mode");
+                switch (mode) {
+                    case ADD_MODE: {
+                        MyTime myTime = (MyTime) bundle.getSerializable("time");
+                        myTimes.add(myTime);
+                        myTimeAdapter.notifyDataSetChanged();
+                        break;
+                    }
+                    case MODIFY_MODE: {
+                        MyTime myTime = (MyTime) bundle.getSerializable("time");
+                        int position = bundle.getInt("position");
+                        if (position >= 0 && position < myTimes.size()) {
+                            myTimes.set(position, myTime);
+                            myTimeAdapter.notifyDataSetChanged();
+                        }
+                        break;
+                    }
+                    case DELETE_MODE: {
+                        int position = bundle.getInt("position");
+                        if (position >= 0 && position < myTimes.size()) {
+                            myTimes.remove(position);
+                            myTimeAdapter.notifyDataSetChanged();
+                        }
+                        break;
+                    }
+                }
             }
         }
     }
@@ -57,6 +86,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), EditTimeActivity.class);
+                intent.putExtra("mode", ADD_MODE);
                 intent.putExtra("color", color);
                 startActivityForResult(intent, requestCode);
             }
@@ -65,6 +95,15 @@ public class HomeFragment extends Fragment {
         initData();
         GridView gridView = view.findViewById(R.id.home_my_time_grid);
         gridView.setAdapter(myTimeAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Intent intent = new Intent(getContext(), TimeDetailActivity.class);
+                intent.putExtra("position", position);
+                intent.putExtra("time", myTimes.get(position));
+                startActivityForResult(intent, requestCode);
+            }
+        });
 
         return view;
     }
