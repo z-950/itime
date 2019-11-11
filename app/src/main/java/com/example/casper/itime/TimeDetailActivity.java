@@ -14,6 +14,10 @@ import android.widget.TextView;
 
 import com.example.casper.itime.data.model.MyTime;
 
+import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import static com.example.casper.itime.MainActivity.setStatusBarTransparent;
 
 public class TimeDetailActivity extends AppCompatActivity {
@@ -23,6 +27,10 @@ public class TimeDetailActivity extends AppCompatActivity {
     private int position;
     private MyTime myTime;
     private boolean isModified = false;
+
+    private Timer timer;
+    private long deltaTime;
+    private TextView countdownTextView;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -61,7 +69,7 @@ public class TimeDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 返回
-                if(isModified){
+                if (isModified) {
                     Intent intent = new Intent();
                     Bundle bundle = new Bundle();
                     bundle.putInt("mode", HomeFragment.MODIFY_MODE);
@@ -103,8 +111,15 @@ public class TimeDetailActivity extends AppCompatActivity {
         });
 
         myTime = (MyTime) intent.getSerializableExtra("time");
+        countdownTextView = this.findViewById(R.id.time_detail_countdown_text_view);
 
         showDetail();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        timer.cancel();
     }
 
     private void showDetail() {
@@ -115,7 +130,46 @@ public class TimeDetailActivity extends AppCompatActivity {
             ((TextView) this.findViewById(R.id.time_detail_remark_text_view)).setText(myTime.remark);
         }
 
-        // TODO:倒计时
+        // 计算时间差（s）
+        Calendar now = Calendar.getInstance();
+        Calendar timeDate = Calendar.getInstance();
+        timeDate.set(myTime.date.year, myTime.date.month - 1, myTime.date.day, 0, 0, 0);
+        deltaTime = (now.getTime().getTime() - timeDate.getTime().getTime()) / 1000;
+
+        // 计时
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int days = (int) Math.abs(deltaTime / (3600 * 24));
+                        int clock = (int) Math.abs(deltaTime % (3600 * 24));
+                        int hours = clock / 3600;
+                        int minutes = (clock % 3600) / 60;
+                        int seconds = clock % 3600 % 60;
+
+                        String text = "";
+                        if (days > 0) {
+                            text += days + "天";
+                        }
+                        if (!(days == 0 && hours == 0)) {
+                            text += hours + "小时";
+                        }
+                        if (!(days == 0 && hours == 0 && minutes == 0)) {
+                            text += minutes + "分钟";
+                        }
+                        text += seconds + "秒";
+
+                        countdownTextView.setText(text);
+
+                        deltaTime++;
+                    }
+                });
+            }
+        }, 0, 1000);
+
         ((TextView) this.findViewById(R.id.time_detail_countdown_text_view)).setText(myTime.date.year + "年" + myTime.date.month + "月" + myTime.date.day + "日");
         ((TextView) this.findViewById(R.id.time_detail_date_text_view)).setText(myTime.date.year + "年" + myTime.date.month + "月" + myTime.date.day + "日");
     }

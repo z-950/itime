@@ -35,7 +35,7 @@ public class MyTimeAdapter extends ArrayAdapter<MyTime> {
         // 计算时间差（天）
         Calendar now = Calendar.getInstance();
         Calendar timeDate = Calendar.getInstance();
-        timeDate.set(myTime.date.year, myTime.date.month - 1, myTime.date.day);
+        timeDate.set(myTime.date.year, myTime.date.month - 1, myTime.date.day, 0, 0, 0);
         long deltaDay = (now.getTime().getTime() - timeDate.getTime().getTime()) / (1000 * 3600 * 24);
 
         String deltaString;
