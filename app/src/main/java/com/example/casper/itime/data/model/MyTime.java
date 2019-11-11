@@ -8,17 +8,12 @@ public class MyTime implements Serializable {
     public String title, remark;
     public RepeatDay repeatDay;
     public Date date;
-
-    public MyTime(String title, String remark, RepeatDay repeatDay, Date date) {
-        this.title = title;
-        this.remark = remark;
-        this.repeatDay = repeatDay;
-        this.date = date;
-    }
+    public String imageUriPath;
 
     public MyTime() {
         this.repeatDay = new RepeatDay();
         this.date = new Date();
+        this.imageUriPath = "";
     }
 
     public void setDate(int year, int month, int day) {

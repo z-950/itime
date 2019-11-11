@@ -6,13 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.casper.itime.data.model.MyTime;
+import com.example.casper.itime.util.Tool;
 
 import java.util.Calendar;
 import java.util.Timer;
@@ -128,6 +132,17 @@ public class TimeDetailActivity extends AppCompatActivity {
             ((TextView) this.findViewById(R.id.time_detail_remark_text_view)).setHeight(0);
         } else {
             ((TextView) this.findViewById(R.id.time_detail_remark_text_view)).setText(myTime.remark);
+        }
+
+        if (!myTime.imageUriPath.isEmpty()) {
+            Bitmap bitmap = Tool.getBitmapFromUriString(this.getContentResolver(), myTime.imageUriPath);
+            if (bitmap != null) {
+                ((ImageView) this.findViewById(R.id.time_detail_image)).setImageBitmap(bitmap);
+            } else {
+                ((ImageView) this.findViewById(R.id.time_detail_image)).setColorFilter(0xFF000000);
+            }
+        } else {
+            ((ImageView) this.findViewById(R.id.time_detail_image)).setColorFilter(0xFF000000);
         }
 
         // 计算时间差（s）

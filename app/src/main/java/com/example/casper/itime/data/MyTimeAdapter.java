@@ -1,14 +1,17 @@
 package com.example.casper.itime.data;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.casper.itime.R;
 import com.example.casper.itime.data.model.MyTime;
+import com.example.casper.itime.util.Tool;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,6 +57,17 @@ public class MyTimeAdapter extends ArrayAdapter<MyTime> {
             ((TextView) view.findViewById(R.id.home_my_time_remark_text_view)).setText(myTime.remark);
         }
         ((TextView) view.findViewById(R.id.home_my_time_countdown_text_view)).setText(deltaString);
+
+        if (!myTime.imageUriPath.isEmpty()) {
+            Bitmap bitmap = Tool.getBitmapFromUriString(view.getContext().getContentResolver(), myTime.imageUriPath);
+            if (bitmap != null) {
+                ((ImageView) view.findViewById(R.id.home_my_time_image_view)).setImageBitmap(bitmap);
+            } else {
+                ((ImageView) view.findViewById(R.id.home_my_time_image_view)).setColorFilter(0xFF000000);
+            }
+        } else {
+            ((ImageView) view.findViewById(R.id.home_my_time_image_view)).setColorFilter(0xFF000000);
+        }
 
         return view;
     }

@@ -1,5 +1,6 @@
 package com.example.casper.itime;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +10,9 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,15 +23,20 @@ import android.widget.TextView;
 
 import com.example.casper.itime.data.model.MyTime;
 import com.example.casper.itime.data.model.RepeatDay;
+import com.example.casper.itime.util.Tool;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import static com.example.casper.itime.HomeFragment.ADD_MODE;
 import static com.example.casper.itime.HomeFragment.MODIFY_MODE;
 import static com.example.casper.itime.MainActivity.setStatusBarTransparent;
 
 public class EditTimeActivity extends AppCompatActivity {
+    //定义一个startActivityForResult（）方法用到的整型值
+    private static final int requestCode = 1700;
+
     private EditText editTitle, editRemark;
 
     private TextView dateTextView;
@@ -39,6 +47,20 @@ public class EditTimeActivity extends AppCompatActivity {
     private int mode;
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == this.requestCode) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    // 得到图片的路径
+                    Uri uri = data.getData();
+                    myTime.imageUriPath = uri.toString();
+                }
+            }
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_time_activity);
@@ -46,13 +68,48 @@ public class EditTimeActivity extends AppCompatActivity {
         // 状态栏透明
         setStatusBarTransparent(this, R.id.edit_time_app_bar_layout);
 
+        editTitle = this.findViewById(R.id.title_edit_text);
+        editRemark = this.findViewById(R.id.remark_edit_text);
+        dateTextView = this.findViewById(R.id.date_detail_text);
+        repeatDayTextView = this.findViewById(R.id.repeat_detail_text);
+
         Intent intent = getIntent();
         mode = intent.getIntExtra("mode", -1);
-        // TODO:获取图片
+
+        // 数据初始化
+        if (mode == MODIFY_MODE) {
+            myTime = (MyTime) intent.getSerializableExtra("time");
+            editTitle.setText(myTime.title);
+            editRemark.setText(myTime.remark);
+        } else {
+            myTime = new MyTime();
+            // 初始化日期
+            Calendar c = Calendar.getInstance();
+            setDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH));
+        }
+        // 显示日期
+        showSelectedDate();
+        // 显示重复周期
+        repeatDayTextView.setText(myTime.repeatDay.toString());
+
         // 获取颜色
         int color = intent.getIntExtra("color", 0xFF000000);
-        // 设置颜色
-        ((ImageView)this.findViewById(R.id.edit_time_image)).setBackgroundColor(color);
+        if (mode == ADD_MODE) {
+            // 设置颜色
+            ((ImageView) this.findViewById(R.id.edit_time_image)).setColorFilter(color);
+        } else {
+            // 图片
+            if (!myTime.imageUriPath.isEmpty()) {
+                Bitmap bitmap = Tool.getBitmapFromUriString(this.getContentResolver(), myTime.imageUriPath);
+                if (bitmap != null) {
+                    ((ImageView) this.findViewById(R.id.edit_time_image)).setImageBitmap(bitmap);
+                } else {
+                    ((ImageView) this.findViewById(R.id.edit_time_image)).setColorFilter(color);
+                }
+            } else {
+                ((ImageView) this.findViewById(R.id.edit_time_image)).setColorFilter(color);
+            }
+        }
 
         final Toolbar toolbar = this.findViewById(R.id.edit_time_tool_bar);
         setSupportActionBar(toolbar);
@@ -93,27 +150,6 @@ public class EditTimeActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-        editTitle = this.findViewById(R.id.title_edit_text);
-        editRemark = this.findViewById(R.id.remark_edit_text);
-        dateTextView = this.findViewById(R.id.date_detail_text);
-        repeatDayTextView = this.findViewById(R.id.repeat_detail_text);
-
-        // 数据初始化
-        if (mode == MODIFY_MODE) {
-            myTime = (MyTime) intent.getSerializableExtra("time");
-            editTitle.setText(myTime.title);
-            editRemark.setText(myTime.remark);
-        } else {
-            myTime = new MyTime();
-            // 初始化日期
-            Calendar c = Calendar.getInstance();
-            setDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH));
-        }
-        // 显示日期
-        showSelectedDate();
-        // 显示重复周期
-        repeatDayTextView.setText(myTime.repeatDay.toString());
 
         this.findViewById(R.id.date_layout).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,6 +207,9 @@ public class EditTimeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 选择图片
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivityForResult(intent, requestCode);
             }
         });
     }
