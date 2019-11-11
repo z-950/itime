@@ -1,5 +1,6 @@
 package com.example.casper.itime;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -7,15 +8,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -133,7 +138,6 @@ public class EditTimeActivity extends AppCompatActivity {
                 myTime.remark = editRemark.getText().toString();
 
                 if (myTime.title.isEmpty()) {
-                    // TODO:收起键盘，键盘挡住snackbar
                     Snackbar.make(toolbar, "标题不能为空", Snackbar.LENGTH_LONG).show();
                     return false;
                 }
@@ -212,6 +216,47 @@ public class EditTimeActivity extends AppCompatActivity {
                 startActivityForResult(intent, requestCode);
             }
         });
+    }
+
+    /**
+     * https://blog.csdn.net/qq_39622065/article/details/83314162
+     * 点击非编辑区域收起键盘
+     * 获取点击事件
+     */
+    @CallSuper
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View view = getCurrentFocus();
+            if (isShouldHideKeyBord(view, ev)) {
+                hideSoftInput(view.getWindowToken());
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    /**
+     * 判定当前是否需要隐藏
+     * 通过view和event的位置判断
+     */
+    protected boolean isShouldHideKeyBord(View v, MotionEvent ev) {
+        if (v != null && (v instanceof EditText)) {
+            int[] l = {0, 0};
+            v.getLocationInWindow(l);
+            int left = l[0], top = l[1], bottom = top + v.getHeight(), right = left + v.getWidth();
+            return !(ev.getX() > left && ev.getX() < right && ev.getY() > top && ev.getY() < bottom);
+        }
+        return false;
+    }
+
+    /**
+     * 隐藏软键盘
+     */
+    private void hideSoftInput(IBinder token) {
+        if (token != null) {
+            InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            manager.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     private void setDate(int year, int month, int day) {
