@@ -184,7 +184,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.edit_time_confirm) {
 
         } else if (id == R.id.nav_settings) {
-
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_about) {
             showFragment(ABOUT_TAG);
         } else if (id == R.id.nav_report) {

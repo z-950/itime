@@ -12,8 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".SettingsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".TimeDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".EditTimeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
