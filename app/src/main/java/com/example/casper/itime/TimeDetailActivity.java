@@ -32,7 +32,7 @@ public class TimeDetailActivity extends AppCompatActivity {
     private MyTime myTime;
     private boolean isModified = false;
 
-    private Timer timer;
+    private Timer timer = null;
     private long deltaTime;
     private TextView countdownTextView;
 
@@ -152,6 +152,9 @@ public class TimeDetailActivity extends AppCompatActivity {
         deltaTime = (now.getTime().getTime() - timeDate.getTime().getTime()) / 1000;
 
         // 计时
+        if (timer != null) {
+            timer.cancel();
+        }
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
