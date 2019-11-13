@@ -6,7 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class ColorManager {
-    private static final String fileName = "colorSerializable";
+    public static final String fileName = "colorSerializable";
 
     static public void save(Context context, int color) {
         try {

@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class MyTimeManager {
-    private static final String fileName = "myTimeSerializable";
+    public static final String fileName = "myTimeSerializable";
 
     static public void save(Context context, ArrayList<MyTime> myTimes) {
         try {
