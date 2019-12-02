@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.MediaStore;
@@ -211,8 +212,18 @@ public class EditTimeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 选择图片
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                // fix READ_URI_PERMISSION:https://stackoverflow.com/questions/25414352/how-to-persist-permission-in-android-api-19-kitkat/29588566#29588566
+                Intent intent;
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+                    intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                }else{
+                    intent = new Intent(Intent.ACTION_GET_CONTENT);
+                }
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setType("image/*");
                 startActivityForResult(intent, requestCode);
             }
         });
