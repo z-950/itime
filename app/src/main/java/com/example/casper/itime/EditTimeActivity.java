@@ -223,6 +223,7 @@ public class EditTimeActivity extends AppCompatActivity {
                 }
                 intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/*");
                 startActivityForResult(intent, requestCode);
             }
