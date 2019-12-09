@@ -51,6 +51,7 @@ public class EditTimeActivity extends AppCompatActivity {
     private MyTime myTime;
 
     private int mode;
+    private int color;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -61,6 +62,7 @@ public class EditTimeActivity extends AppCompatActivity {
                     // 得到图片的路径
                     Uri uri = data.getData();
                     myTime.imageUriPath = uri.toString();
+                    showImage();
                 }
             }
         }
@@ -99,22 +101,13 @@ public class EditTimeActivity extends AppCompatActivity {
         repeatDayTextView.setText(myTime.repeatDay.toString());
 
         // 获取颜色
-        int color = intent.getIntExtra("color", 0xFF000000);
+        color = intent.getIntExtra("color", 0xFF000000);
         if (mode == ADD_MODE) {
             // 设置颜色
             ((ImageView) this.findViewById(R.id.edit_time_image)).setColorFilter(color);
         } else {
             // 图片
-            if (!myTime.imageUriPath.isEmpty()) {
-                Bitmap bitmap = Tool.getBitmapFromUriString(this.getContentResolver(), myTime.imageUriPath);
-                if (bitmap != null) {
-                    ((ImageView) this.findViewById(R.id.edit_time_image)).setImageBitmap(bitmap);
-                } else {
-                    ((ImageView) this.findViewById(R.id.edit_time_image)).setColorFilter(color);
-                }
-            } else {
-                ((ImageView) this.findViewById(R.id.edit_time_image)).setColorFilter(color);
-            }
+            showImage();
         }
 
         final Toolbar toolbar = this.findViewById(R.id.edit_time_tool_bar);
@@ -228,6 +221,20 @@ public class EditTimeActivity extends AppCompatActivity {
                 startActivityForResult(intent, requestCode);
             }
         });
+    }
+
+    private void showImage(){
+        if (!myTime.imageUriPath.isEmpty()) {
+            Bitmap bitmap = Tool.getBitmapFromUriString(this.getContentResolver(), myTime.imageUriPath);
+            if (bitmap != null) {
+                ((ImageView) this.findViewById(R.id.edit_time_image)).setImageBitmap(bitmap);
+                ((ImageView) this.findViewById(R.id.edit_time_image)).setColorFilter(0);
+            } else {
+                ((ImageView) this.findViewById(R.id.edit_time_image)).setColorFilter(color);
+            }
+        } else {
+            ((ImageView) this.findViewById(R.id.edit_time_image)).setColorFilter(color);
+        }
     }
 
     /**
